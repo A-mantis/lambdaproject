@@ -1,0 +1,18 @@
+
+\squid:UnusedPrivateMethodA"+Remove this unused private "valid3" method.(½Æşÿÿÿÿ8î×â«.
+Usquid:UnusedPrivateMethodv")Remove this unused private "test" method.(‚Ê¸¢8÷ÿ«.
+W
+squid:S106…"9Replace this use of System.out or System.err by a logger.(Ç„µÃ8µëªş«.
+V
+squid:S106 "9Replace this use of System.out or System.err by a logger.(œ•é‹8ŒÜ¤ÿ«.
+\squid:UnusedPrivateMethodN"+Remove this unused private "valid4" method.(ÏêÅéüÿÿÿÿ8î×â«.
+gsquid:S1192*"IDefine a constant instead of duplicating this literal "SUCCESS" 11 times.(êõ’ü8­ß©ş«.
+\squid:UnusedPrivateMethod\"+Remove this unused private "valid5" method.(›’ò¼ıÿÿÿÿ8şöü«.
+{squid:S1192„"\Define a constant instead of duplicating this literal "è·å–åˆ°çš„è®¢å•å·ä¸ºç©º" 3 times.(×êˆ8µëªş«.
+[
+squid:S106!"9Replace this use of System.out or System.err by a logger.(Ó¦¹Üúÿÿÿÿ8øäÿ«.
+Wsquid:UnusedPrivateMethod("+Remove this unused private "valid1" method.(á´ˆÛ8–Öèâ«.
+ksquid:UnusedPrivateMethod">Remove this unused private "normalGetCarInsuranceName" method.(öÿ–8Œ¹²ş«.
+…squid:S1192/"gDefine a constant instead of duplicating this literal "20200616151602SDCFV7JHEFOEUGH083WEIGH9" 4 times.(Ò°–8î×â«.
+gsquid:S1192"HDefine a constant instead of duplicating this literal "Unknown" 3 times.(ÂéÛà8ÌÔ´ş«.
+Vsquid:UnusedPrivateMethod6"+Remove this unused private "valid2" method.(ÙÁ–e8î×â«.
