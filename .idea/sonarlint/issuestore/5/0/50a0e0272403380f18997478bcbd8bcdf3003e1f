@@ -1,0 +1,4 @@
+
+Jsquid:S2885"-Make "simpleDateFormat" an instance variable.(û¯Ä`8ëªÀñ¸.
+"squid:ClassVariableVisibilityCheck"\Make simpleDateFormat a static final constant or non-public and provide accessors if needed.(û¯Ä`8ëªÀñ¸.
+Ssquid:S1444"6Make this "public static simpleDateFormat" field final(û¯Ä`8ëªÀñ¸.

@@ -1,7 +1,10 @@
 package com.mantis.lambda.util;
 
+import com.mantis.lambda.config.StaticProperties;
 import com.mantis.lambda.pojo.Student;
+import com.mantis.lambda.pojo.User;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -34,12 +37,12 @@ public class StreamUtil {
     private static List<String> stringList = Arrays.asList(stringArray);
 
     public StreamUtil() {
-
+        stringList1.add("H");
+        stringList1.add("C");
         stringList1.add("A");
         stringList1.add("B");
-        stringList1.add("C");
         stringList1.add("E");
-        stringList1.add("H");
+
 
         stringList2.add("D");
         stringList2.add("F");
@@ -298,6 +301,89 @@ public class StreamUtil {
         System.out.println(String.join("", stringList1));
     }
 
+
+    private static void groupUser() {
+
+        User user1 = new User("1", "username1", "password", "true", DataUtil.strToDate("2019-09-02"), DataUtil.strToDate("2019-09-02"), 12, new BigDecimal(12));
+        User user2 = new User("2", "username2", "password", "true", DataUtil.strToDate("2019-09-03"), DataUtil.strToDate("2019-10-02"), 6, new BigDecimal(12));
+        User user3 = new User("3", "username3", "password", "true", DataUtil.strToDate("2019-09-04"), DataUtil.strToDate("2019-10-04"), 13, new BigDecimal(12));
+        User user4 = new User("4", "username3", "password", "false", DataUtil.strToDate("2019-09-05"), DataUtil.strToDate("2019-10-05"), 22, new BigDecimal(12));
+        User user5 = new User("5", "username5", "password", "false", DataUtil.strToDate("2019-09-06"), DataUtil.strToDate("2019-09-06"), 20, new BigDecimal(12));
+        User user6 = new User("6", "username7", "password", "false", DataUtil.strToDate("2019-09-06"), DataUtil.strToDate("2019-09-10"), 12, new BigDecimal(12));
+        User user7 = new User("6", "username6", "password", "false", DataUtil.strToDate("2019-09-06"), DataUtil.strToDate("2019-09-10"), 12, new BigDecimal(12));
+
+        List<User> userList = new ArrayList<>();
+        userList.add(user1);
+        userList.add(user2);
+        userList.add(user3);
+        userList.add(user4);
+        userList.add(user5);
+        userList.add(user6);
+        userList.add(user7);
+
+        //通过指定字段分组Collectors.groupingBy().
+        Map<String, List<User>> groupByStatus = userList.stream().collect(Collectors.groupingBy(User::getStatus));
+        System.out.println("根据状态分组 : " + groupByStatus);
+        for (Map.Entry<String, List<User>> entry : groupByStatus.entrySet()) {
+            String status = entry.getKey();
+            List<User> list = entry.getValue();
+        }
+
+
+        //通过条件过滤filter().
+        List<User> userListByStatus = userList.stream().filter(t -> t.getStatus().equals("true")).
+                collect(Collectors.toList());
+        System.out.println("通过条件过滤filter : " + userListByStatus);
+
+        //获取list某个字段组装新list.
+        List<String> userIdList = userList.stream().map(User::getUserId).collect(Collectors.toList());
+        System.out.println("获取list某个字段组装新list : " + userIdList);
+
+        //去重distinct().
+        List<User> distinctUserIdList = userList.stream().distinct().collect(Collectors.toList());
+        System.out.println("去重distinct : " + distinctUserIdList);
+
+        //单字段多字段排序sort().
+        userList.sort(Comparator.comparing(User::getUserId));
+        System.out.println("单字段多字段排序sort,userId升序 : " + userList);
+
+        //单字段多字段排序sort().
+        userList.sort(Comparator.comparing(User::getUserId, Comparator.reverseOrder()));
+        System.out.println("单字段多字段排序sort,userId降序 : " + userList);
+
+        userList.sort(Comparator.comparing(User::getUserId).thenComparing(User::getUsername));
+        System.out.println("单字段多字段排序sort,userId升序,userName升序 : " + userList);
+
+        userList.sort(Comparator.comparing(User::getUserId).thenComparing(User::getUsername, Comparator.reverseOrder()));
+        System.out.println("单字段多字段排序sort,userId升序,userName降序 : " + userList);
+
+        userList.sort(Comparator.comparing(User::getUserId, Comparator.nullsFirst(Comparator.naturalOrder())));
+        System.out.println("单字段多字段排序sort : " + userList);
+
+
+        //list转map.
+        Map<String, User> userMap = userList.stream().collect(Collectors.toMap(User::getUserId, t -> t, (k1, k2) -> k1));
+        System.out.println("list转map : " + userMap);
+
+        //求和
+        int sumAge = userList.stream().mapToInt(User::getAge).sum();
+        BigDecimal totalMemberNum = userList.stream().map(User::getMemberNum).reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("sumAge : " + sumAge);
+        System.out.println("totalMemberNum : " + totalMemberNum);
+
+
+        //最值
+        Date minDate = Optional.of(userList.stream().map(User::getCreateTime).min(Date::compareTo)).map(Optional::get).orElse(null);
+        System.out.println("minDate : " + StaticProperties.simpleDateFormat.format(minDate));
+
+        Date maxDate = Optional.of(userList.stream().map(User::getCreateTime).max(Date::compareTo)).map(Optional::get).orElse(null);
+        System.out.println("maxDate : " + StaticProperties.simpleDateFormat.format(maxDate));
+
+        User maxUp = Optional.of(userList.stream().max(Comparator.comparingInt(User::getAge))).map(Optional::get).orElse(null);
+        System.out.println("maxUp : " + maxUp);
+    }
+
+
     /**
      * 模拟根据不同code返回不同数据
      *
@@ -349,5 +435,7 @@ public class StreamUtil {
         groupStudent();
 
         joinStr();
+
+        groupUser();
     }
 }
