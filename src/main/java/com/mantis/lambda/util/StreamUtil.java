@@ -1,8 +1,8 @@
 package com.mantis.lambda.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mantis.lambda.config.StaticProperties;
-import com.mantis.lambda.pojo.Student;
-import com.mantis.lambda.pojo.User;
+import com.mantis.lambda.pojo.*;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -35,6 +35,55 @@ public class StreamUtil {
     private static String[] stringArray = {"a", "b", "c"};
 
     private static List<String> stringList = Arrays.asList(stringArray);
+
+    private static String json = "{\n" +
+            "    \"results\": [\n" +
+            "        {\n" +
+            "            \"groupName\": \"小领导\",\n" +
+            "            \"groupCode\": \"100057_121\",\n" +
+            "            \"employeeId\": \"nbs47\",\n" +
+            "            \"displayName\": \"戴海杨\",\n" +
+            "            \"roleName\": \"12222\",\n" +
+            "            \"roleCode\": \"23,24,ADMIN\",\n" +
+            "            \"stationName\": \"重庆分公司总经理\",\n" +
+            "            \"stationCode\": \"SM12_BRANCH_MGR\",\n" +
+            "            \"stationType\": \"LOCAL\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"groupName\": \"小领导\",\n" +
+            "            \"groupCode\": \"100057_121\",\n" +
+            "            \"employeeId\": \"nbs47\",\n" +
+            "            \"displayName\": \"戴海杨\",\n" +
+            "            \"roleName\": \"\",\n" +
+            "            \"roleCode\": \"\",\n" +
+            "            \"stationName\": \"重庆分公司总经理\",\n" +
+            "            \"stationCode\": \"SM12_BRANCH_MGR\",\n" +
+            "            \"stationType\": \"LOCAL\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"groupName\": \"苏州分公司\",\n" +
+            "            \"groupCode\": \"0_99999_1_401\",\n" +
+            "            \"employeeId\": \"nbs47\",\n" +
+            "            \"displayName\": \"戴海杨\",\n" +
+            "            \"roleName\": \"12222\",\n" +
+            "            \"roleCode\": \"22\",\n" +
+            "            \"stationName\": null,\n" +
+            "            \"stationCode\": null,\n" +
+            "            \"stationType\": null\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"groupName\": \"苏州分公司\",\n" +
+            "            \"groupCode\": \"0_99999_1_401\",\n" +
+            "            \"employeeId\": \"nbs47\",\n" +
+            "            \"displayName\": \"戴海杨\",\n" +
+            "            \"roleName\": \"管理员\",\n" +
+            "            \"roleCode\": \"ADMIN\",\n" +
+            "            \"stationName\": null,\n" +
+            "            \"stationCode\": null,\n" +
+            "            \"stationType\": null\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}";
 
     public StreamUtil() {
         stringList1.add("H");
@@ -211,8 +260,14 @@ public class StreamUtil {
      * 2. Function.identity()返回一个输出跟输入一样的Lambda表达式对象，等价于形如t -> t形式的Lambda表达式。
      */
     private static void switchStreamToMap() {
-        Stream<String> stream = Stream.of("A12", "F4", "F1", "SU35");
-        Map<String, Integer> map = stream.filter(o -> o.length() > 1).collect(Collectors.toMap(Function.identity(), String::length));
+//        Stream<String> stream = Stream.of("A12", "F4", "F1", "SU35");
+//        Map<String, Integer> map = stream.filter(o -> o.length() > 1).collect(Collectors.toMap(Function.identity(), String::length));
+//        System.out.println(String.format("将Stream转换成容器或Map %s", map));
+
+        Stream<String> stream = Stream.of(null, null, null, "A10", "MG35", null);
+        //Map<String, Integer> map = stream.filter(o -> o.length() > 1).collect(Collectors.toMap(Function.identity(), String::length));
+        //Map<String, Integer> map = stream.filter(o -> o.length() > 1).collect(Collectors.toMap(Function.identity(), String::length));
+        Map<String, Integer> map = stream.filter(Objects::nonNull).collect(Collectors.toMap(Function.identity(), String::length));
         System.out.println(String.format("将Stream转换成容器或Map %s", map));
     }
 
@@ -408,6 +463,80 @@ public class StreamUtil {
         return stringList;
     }
 
+//    private static void groupByOneField() {
+//        RoleList result = JSONObject.parseObject(json, RoleList.class);
+//        List<Role> roleList = result.getResults();
+//        List<Role> byDept = new ArrayList<>();
+//        roleList.stream().collect(Collectors.groupingBy(Role::getEmployeeId)).forEach((id, transfer) -> {
+//            transfer.stream().reduce((a, b) -> new Role(
+//                    mergeString(a.getGroupName(), b.getGroupName()),
+//                    a.getGroupCode(),
+//                    a.getEmployeeId(),
+//                    mergeString(a.getDisplayName(), b.getDisplayName()),
+//                    mergeString(a.getRoleName(), b.getRoleName()),
+//                    mergeString(a.getRoleCode(), b.getRoleCode()),
+//                    mergeString(a.getStationName(), b.getStationName()),
+//                    mergeString(a.getStationCode(), b.getStationCode()),
+//                    mergeString(a.getStationType(), b.getStationType())
+//            )).ifPresent(byDept::add);
+//        });
+//        System.out.println(byDept);
+//    }
+
+
+    private static void groupByOneField() {
+        RoleList result = JSONObject.parseObject(json, RoleList.class);
+        List<Role> roleList = result.getResults();
+        List<Role> byDept = new ArrayList<>();
+        roleList.stream().collect(Collectors.groupingBy(Role::getEmployeeId)).forEach((id, transfer) -> {
+            transfer.stream().reduce((a, b) -> new Role(
+                    mergeString(a.getGroupName(), b.getGroupName()),
+                    a.getGroupCode(),
+                    a.getEmployeeId(),
+                    mergeString(a.getDisplayName(), b.getDisplayName()),
+                    mergeString(a.getRoleName(), b.getRoleName()),
+                    mergeString(a.getRoleCode(), b.getRoleCode()),
+                    mergeString(a.getStationName(), b.getStationName()),
+                    mergeString(a.getStationCode(), b.getStationCode()),
+                    mergeString(a.getStationType(), b.getStationType())
+            )).ifPresent(byDept::add);
+        });
+        System.out.println("单字段分组并去重 : " + byDept);
+    }
+
+    private static void groupByMultipleField() {
+
+        RoleList result = JSONObject.parseObject(json, RoleList.class);
+        List<Role> roleList = result.getResults();
+        List<Role> byDept = new ArrayList<>();
+        roleList.stream().collect(Collectors.groupingBy(StreamUtil::fetchGroupKey)).forEach((id, transfer) -> {
+            transfer.stream().reduce((a, b) -> new Role(
+                    mergeString(a.getGroupName(), b.getGroupName()),
+                    a.getGroupCode(),
+                    a.getEmployeeId(),
+                    mergeString(a.getDisplayName(), b.getDisplayName()),
+                    mergeString(a.getRoleName(), b.getRoleName()),
+                    mergeString(a.getRoleCode(), b.getRoleCode()),
+                    mergeString(a.getStationName(), b.getStationName()),
+                    mergeString(a.getStationCode(), b.getStationCode()),
+                    mergeString(a.getStationType(), b.getStationType())
+            )).ifPresent(byDept::add);
+        });
+        System.out.println("多字段分组并去重 : " + byDept);
+    }
+
+
+    private static String fetchGroupKey(Role role) {
+        return role.getEmployeeId() + "#" + role.getGroupCode();
+    }
+
+    private static String mergeString(String str, String str1) {
+        Set<String> stringSet = new HashSet<>();
+        Optional.ofNullable(str).filter(stringSet::add);
+        Optional.ofNullable(str1).filter(stringSet::add);
+        return String.join(",", stringSet);
+    }
+
 
     public static void main(String[] args) {
 
@@ -437,5 +566,9 @@ public class StreamUtil {
         joinStr();
 
         groupUser();
+
+        groupByOneField();
+
+        groupByMultipleField();
     }
 }
