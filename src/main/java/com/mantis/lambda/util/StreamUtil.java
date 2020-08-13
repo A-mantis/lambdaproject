@@ -6,7 +6,6 @@ import com.mantis.lambda.pojo.*;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -85,6 +84,12 @@ public class StreamUtil {
             "    ]\n" +
             "}";
 
+    private static List<SalesPerson> sales = null;
+    private static Integer[] num = new Integer[]{1, 2, 3, 4, 5, 6,};
+
+    private static List<Trader> traders = new LinkedList<>();
+    private static List<Transaction> transactions = new LinkedList<>();
+
     public StreamUtil() {
         stringList1.add("H");
         stringList1.add("C");
@@ -111,6 +116,45 @@ public class StreamUtil {
         list.add(4);
         list.add(5);
         list.add(6);
+
+        Employee emma = new Employee(001, "Emma", 41, 20000, Status.FREE);
+        Employee mary = new Employee(002, "Mary", 39, 18000, Status.BUSY);
+        Employee allen = new Employee(003, "Allen", 33, 15000, Status.BUSY);
+        Employee olivia = new Employee(004, "Olivia", 52, 32000, Status.FREE);
+        Employee natasha = new Employee(005, "Natasha", 27, 13000, Status.BUSY);
+        Employee kevin = new Employee(006, "Kevin", 25, 10000, Status.FREE);
+        Employee haivent = new Employee(007, "Haivent", 25, 12000, Status.FREE);
+
+        sales = Arrays.asList(
+                new SalesPerson(emma, "ChengDu", "2005"),
+                new SalesPerson(mary, "ShangHai", "2010"),
+                new SalesPerson(allen, "ShangHai", "2005"),
+                new SalesPerson(olivia, "ShenZhen", "2006"),
+                new SalesPerson(natasha, "ChengDu", "2008"),
+                new SalesPerson(kevin, "ChengDu", "2005"),
+                new SalesPerson(haivent, "BeiJing", "2005")
+        );
+
+        Trader t1 = new Trader("trader1", "剑桥");
+        Trader t2 = new Trader("trader2", "米兰");
+        Trader t3 = new Trader("trader3", "柏林");
+        Trader t4 = new Trader("trader4", "伦敦");
+        Trader t5 = new Trader("trader5", "剑桥");
+        Trader t6 = new Trader("trader6", "伦敦");
+        traders.addAll(Arrays.asList(t1, t2, t3, t4));
+
+        Transaction tran1 = new Transaction(t4, 2011, 300, "$");
+        Transaction tran2 = new Transaction(t1, 2012, 1000, "$");
+        Transaction tran3 = new Transaction(t6, 2011, 400, "￥");
+        Transaction tran4 = new Transaction(t2, 2012, 710, "￥");
+        Transaction tran5 = new Transaction(t2, 2013, 700, "$");
+        Transaction tran6 = new Transaction(t1, 2013, 200, "￥");
+        Transaction tran7 = new Transaction(t2, 2012, 400, "$");
+        Transaction tran8 = new Transaction(t3, 2014, 100, "￥");
+        Transaction tran9 = new Transaction(t4, 2011, 900, "$");
+        Transaction tran10 = new Transaction(t5, 2011, 950, "￥");
+        transactions.addAll(Arrays.asList(tran1, tran2, tran3, tran4, tran5, tran6, tran7, tran8, tran9, tran10));
+
     }
 
 
@@ -233,9 +277,7 @@ public class StreamUtil {
         stringList.add("3");
         System.out.println("遍历一个List，根据List返回列表构成新的列表");
         List<String> result = stringList.stream().map(StreamUtil::queryList).flatMap(Collection::stream).sorted().distinct().collect(Collectors.toList());
-        result.forEach(str -> {
-            System.out.print(str + " ");
-        });
+        result.forEach(str -> System.out.print(str + " "));
         System.out.println();
     }
 
@@ -248,9 +290,7 @@ public class StreamUtil {
         map.put(1, stringList1);
         map.put(2, stringList2);
         List<String> mergeList2 = map.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
-        mergeList2.forEach(str -> {
-            System.out.print(str + " ");
-        });
+        mergeList2.forEach(str -> System.out.print(str + " "));
         System.out.println();
     }
 
@@ -463,44 +503,22 @@ public class StreamUtil {
         return stringList;
     }
 
-//    private static void groupByOneField() {
-//        RoleList result = JSONObject.parseObject(json, RoleList.class);
-//        List<Role> roleList = result.getResults();
-//        List<Role> byDept = new ArrayList<>();
-//        roleList.stream().collect(Collectors.groupingBy(Role::getEmployeeId)).forEach((id, transfer) -> {
-//            transfer.stream().reduce((a, b) -> new Role(
-//                    mergeString(a.getGroupName(), b.getGroupName()),
-//                    a.getGroupCode(),
-//                    a.getEmployeeId(),
-//                    mergeString(a.getDisplayName(), b.getDisplayName()),
-//                    mergeString(a.getRoleName(), b.getRoleName()),
-//                    mergeString(a.getRoleCode(), b.getRoleCode()),
-//                    mergeString(a.getStationName(), b.getStationName()),
-//                    mergeString(a.getStationCode(), b.getStationCode()),
-//                    mergeString(a.getStationType(), b.getStationType())
-//            )).ifPresent(byDept::add);
-//        });
-//        System.out.println(byDept);
-//    }
-
-
     private static void groupByOneField() {
         RoleList result = JSONObject.parseObject(json, RoleList.class);
         List<Role> roleList = result.getResults();
         List<Role> byDept = new ArrayList<>();
-        roleList.stream().collect(Collectors.groupingBy(Role::getEmployeeId)).forEach((id, transfer) -> {
-            transfer.stream().reduce((a, b) -> new Role(
-                    mergeString(a.getGroupName(), b.getGroupName()),
-                    a.getGroupCode(),
-                    a.getEmployeeId(),
-                    mergeString(a.getDisplayName(), b.getDisplayName()),
-                    mergeString(a.getRoleName(), b.getRoleName()),
-                    mergeString(a.getRoleCode(), b.getRoleCode()),
-                    mergeString(a.getStationName(), b.getStationName()),
-                    mergeString(a.getStationCode(), b.getStationCode()),
-                    mergeString(a.getStationType(), b.getStationType())
-            )).ifPresent(byDept::add);
-        });
+        roleList.stream().collect(Collectors.groupingBy(Role::getEmployeeId)).forEach((id, transfer) ->
+                transfer.stream().reduce((a, b) -> new Role(
+                        mergeString(a.getGroupName(), b.getGroupName()),
+                        a.getGroupCode(),
+                        a.getEmployeeId(),
+                        mergeString(a.getDisplayName(), b.getDisplayName()),
+                        mergeString(a.getRoleName(), b.getRoleName()),
+                        mergeString(a.getRoleCode(), b.getRoleCode()),
+                        mergeString(a.getStationName(), b.getStationName()),
+                        mergeString(a.getStationCode(), b.getStationCode()),
+                        mergeString(a.getStationType(), b.getStationType())
+                )).ifPresent(byDept::add));
         System.out.println("单字段分组并去重 : " + byDept);
     }
 
@@ -509,19 +527,18 @@ public class StreamUtil {
         RoleList result = JSONObject.parseObject(json, RoleList.class);
         List<Role> roleList = result.getResults();
         List<Role> byDept = new ArrayList<>();
-        roleList.stream().collect(Collectors.groupingBy(StreamUtil::fetchGroupKey)).forEach((id, transfer) -> {
-            transfer.stream().reduce((a, b) -> new Role(
-                    mergeString(a.getGroupName(), b.getGroupName()),
-                    a.getGroupCode(),
-                    a.getEmployeeId(),
-                    mergeString(a.getDisplayName(), b.getDisplayName()),
-                    mergeString(a.getRoleName(), b.getRoleName()),
-                    mergeString(a.getRoleCode(), b.getRoleCode()),
-                    mergeString(a.getStationName(), b.getStationName()),
-                    mergeString(a.getStationCode(), b.getStationCode()),
-                    mergeString(a.getStationType(), b.getStationType())
-            )).ifPresent(byDept::add);
-        });
+        roleList.stream().collect(Collectors.groupingBy(StreamUtil::fetchGroupKey)).forEach((id, transfer) ->
+                transfer.stream().reduce((a, b) -> new Role(
+                        mergeString(a.getGroupName(), b.getGroupName()),
+                        a.getGroupCode(),
+                        a.getEmployeeId(),
+                        mergeString(a.getDisplayName(), b.getDisplayName()),
+                        mergeString(a.getRoleName(), b.getRoleName()),
+                        mergeString(a.getRoleCode(), b.getRoleCode()),
+                        mergeString(a.getStationName(), b.getStationName()),
+                        mergeString(a.getStationCode(), b.getStationCode()),
+                        mergeString(a.getStationType(), b.getStationType())
+                )).ifPresent(byDept::add));
         System.out.println("多字段分组并去重 : " + byDept);
     }
 
@@ -535,6 +552,213 @@ public class StreamUtil {
         Optional.ofNullable(str).filter(stringSet::add);
         Optional.ofNullable(str1).filter(stringSet::add);
         return String.join(",", stringSet);
+    }
+
+
+    private static void employeeTest() {
+        System.out.println("员工==============================================================================");
+        System.out.println("整数数组列表的平方根");
+        Arrays.stream(num)
+                .map(e -> e * e)
+                .forEach(System.out::println);
+
+        System.out.println("计算员工数量");
+        Optional<Integer> reduce = sales.stream()
+                .map(e -> 1)
+                .reduce(Integer::sum);
+
+        System.out.println(reduce.get());
+
+        System.out.println("筛选出 2005 年入职的员工，并按薪资从低到高排序");
+        sales.stream()
+                .filter(s -> s.getEntryYear().equals(String.valueOf(2005)))
+                .sorted(Comparator.comparingDouble(x -> x.getEmployee().getSalary()))
+                .forEach(System.out::println);
+
+        System.out.println("公司的员工都分布于那些城市，并排序");
+        sales.stream()
+                .map(SalesPerson::getAddress)
+                .distinct()
+                .sorted()
+                .forEach(System.out::println);
+
+
+        System.out.println("获取所有员工姓名，并按首字母排序");
+        sales.stream()
+                .map(s -> s.getEmployee().getName())
+                .sorted()
+                .forEach(System.out::print);
+
+        System.out.println("查看是否有成都的员工");
+        boolean anyMatch = sales.stream()
+                .anyMatch(s -> "ChengDu".equals(s.getAddress()));
+        System.out.println(anyMatch);
+
+        System.out.println("获取所有成都的员工的薪资总和");
+        Optional<Double> result = sales.stream()
+                .filter(s -> "ChengDu".equals(s.getAddress()))
+                .map(s -> s.getEmployee().getSalary())
+                .reduce(Double::sum);
+        System.out.println(result.get());
+
+        System.out.println("获取公司中薪资最高的薪资");
+        Optional<SalesPerson> max = sales.stream()
+                .max(Comparator.comparingDouble(x -> x.getEmployee().getSalary()));
+        System.out.println(max.get());
+
+        System.out.println("获取公司中成都员工薪资最高的薪资");
+        Optional<SalesPerson> cdMax = sales.stream()
+                .filter(s -> "ChengDu".equals(s.getAddress()))
+                .max(Comparator.comparingDouble(x -> x.getEmployee().getSalary()));
+        System.out.println(cdMax.get());
+
+        System.out.println("获取公司中薪资最低的薪资");
+        Optional<SalesPerson> min = sales.stream()
+                .min(Comparator.comparingDouble(x -> x.getEmployee().getSalary()));
+        System.out.println(min.get());
+    }
+
+    private static void transactions() {
+        System.out.println("交易==============================================================================");
+        System.out.println("2011年的所有交易并按照金额由小到大排序");
+        transactions.stream()
+                .filter(t -> t.getYear() == 2011)
+                .sorted(Comparator.comparingInt(Transaction::getValue))
+                .forEach(System.out::println);
+
+        System.out.println("交易员都在哪些不同的城市生活");
+        traders.stream()
+                .map(Trader::getCity)
+                .distinct()
+                .forEach(System.out::println);
+
+        System.out.println("查找所有来自剑桥的交易员，并按姓名排序");
+        traders.stream()
+                .filter(t -> "剑桥".equals(t.getCity()))
+                .sorted(Comparator.comparing(Trader::getName))
+                .forEach(System.out::println);
+
+        System.out.println("查询所有交易员的姓名字符串，并按字母排序");
+        traders.stream()
+                .filter(t -> "剑桥".equals(t.getCity()))
+                .sorted(Comparator.comparing(Trader::getName))
+                .forEach(System.out::println);
+
+        System.out.println("有没有交易员在米兰");
+        boolean any = traders.stream()
+                .anyMatch(t -> "米兰".equals(t.getCity()));
+        System.out.println(any);
+
+        System.out.println("打印在剑桥生活的交易员的所有交易金额");
+        Integer sum = transactions.stream()
+                .filter(tran -> "剑桥".equals(tran.getTrader().getCity()))
+                .map(Transaction::getValue)
+                .reduce(0, Integer::sum);
+        System.out.println(sum);
+
+
+        System.out.println("所有交易中，最高的交易额是多少");
+        transactions.stream().max(Comparator.comparing(Transaction::getValue))
+                .ifPresent(System.out::println);
+
+        transactions.stream()
+                .map(Transaction::getValue)
+                .reduce(Integer::max)
+                .ifPresent(System.out::println);
+
+        System.out.println("找到交易额中最小的金额");
+        transactions.stream()
+                .map(Transaction::getValue)
+                .reduce(Integer::min)
+                .ifPresent(System.out::println);
+
+        transactions.stream()
+                .min(Comparator.comparing(Transaction::getValue))
+                .ifPresent(System.out::println);
+
+        transactions.stream()
+                .min(Comparator.comparing(Transaction::getValue))
+                .ifPresent(System.out::println);
+
+
+        System.out.println("统计每个交易员的记录");
+        transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getTrader))
+                .entrySet()
+                .forEach(System.out::println);
+
+        System.out.println("找到单笔交易最高的交易员");
+        transactions.stream()
+                .max(Comparator.comparing(Transaction::getValue))
+                .ifPresent(tran -> System.out.println(tran.getTrader()));
+
+        System.out.println("统计交易总额最高的交易员(排序)");
+        transactions.stream().collect(Collectors.groupingBy(Transaction::getTrader))
+                .entrySet().stream().map(t -> {
+            Map<String, Object> result = new HashMap<>();
+            int sum1 = t.getValue().stream().mapToInt(Transaction::getValue).sum();
+            result.put("sum", sum1);
+            result.put("trader", t.getKey());
+            return result;
+
+        }).max(Comparator.comparingInt((Map m) -> (int) m.get("sum"))).ifPresent(System.out::println);
+
+
+        System.out.println("使用方法引用对transaction排序");
+        transactions.stream().sorted(Comparator.comparing(Transaction::getValue)).forEach(System.out::println);
+
+        System.out.println("--------------------------------------------------------------------------------");
+
+        //声明接口的实现方式
+        Function<Transaction, Integer> function = Transaction::getValue;
+        Transaction[] transactionsArray = new Transaction[transactions.size()];
+        Arrays.sort(transactions.toArray(transactionsArray), Comparator.comparing(function));
+        Arrays.asList(transactionsArray).forEach(System.out::println);
+
+        System.out.println("根据trader(对象)将transaction分组");
+        transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getTrader))
+                .entrySet()
+                .forEach(System.out::println);
+
+
+        System.out.println("根据货币（字符串）类型分组");
+        transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getCurrency))
+                .entrySet()
+                .forEach(System.out::println);
+
+        System.out.println("获取交易总金额");
+        int sum1 = transactions.stream().mapToInt(Transaction::getValue).sum();
+        System.out.println("通过map转换求和sum1 = " + sum1);
+        int sum2 = transactions.stream().mapToInt(Transaction::getValue).sum();
+        System.out.println("通过collect汇总求和sum2 = " + sum2);
+        //规约操作都需要使用map将对象映射为返回值的类型
+        int sum3 = transactions.stream().map(Transaction::getValue).reduce(0, Integer::sum);
+        System.out.println("通过reduce规约求和sum3 = " + sum3);
+
+        System.out.println("二级分类，先按照交易员分类，然后交易金额大于800归为high，低于800归为low");
+        transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getTrader, Collectors.groupingBy(t -> {
+                    if (t.getValue() < 800) {
+                        return "low";
+                    } else {
+                        return "heigh";
+                    }
+                })))
+                .entrySet()
+                .forEach(System.out::println);
+
+        System.out.println("获取每个交易员，交易最大的一笔");
+        transactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getTrader, Collectors.maxBy(Comparator.comparingInt(Transaction::getValue))))
+                .entrySet().stream()
+                .distinct()
+                .sorted(Comparator.comparing((Map.Entry m) -> {
+                    Trader t = (Trader) m.getKey();
+                    return t.getName();
+                }))
+                .forEach(System.out::println);
     }
 
 
@@ -570,5 +794,9 @@ public class StreamUtil {
         groupByOneField();
 
         groupByMultipleField();
+
+        employeeTest();
+
+        transactions();
     }
 }

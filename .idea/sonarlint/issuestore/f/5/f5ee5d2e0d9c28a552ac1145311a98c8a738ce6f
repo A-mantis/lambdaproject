@@ -1,9 +1,12 @@
 
-Ksquid:S1602Ê",Remove useless curly braces around statement(¢¢»ª8øšÉŞ«.
-dsquid:S1192¼"FDefine a constant instead of duplicating this literal "false" 4 times.(éÍ×S8óŒ¶ñ¸.
-msquid:S1192¹"IDefine a constant instead of duplicating this literal "password" 7 times.(¤Ú‰÷ıÿÿÿÿ8óŒ¶ñ¸.
-jsquid:S1192½"KDefine a constant instead of duplicating this literal "2019-09-06" 4 times.(´ˆõ¯8óŒ¶ñ¸.
-Hsquid:S1481Ï")Remove this unused "list" local variable.(Ôà‚É8óŒ¶ñ¸.
-Ksquid:S1602»",Remove useless curly braces around statement(Õ…ê8øšÉŞ«.
-Osquid:S1481Î"+Remove this unused "status" local variable.(Ë„³ëùÿÿÿÿ8óŒ¶ñ¸.
-esquid:UselessImportCheck	":Remove this unused import 'java.util.function.BiFunction'.(ô¿°×8‰ÈË¬.
+Œsquid:S1192+"iDefine a constant instead of duplicating this literal "            \"employeeId\": \"nbs47\",\n" 4 times.(·‘ŒÁøÿÿÿÿ8×¡‰¼.
+dsquid:S1192•"FDefine a constant instead of duplicating this literal "false" 4 times.(éÍ×S8•ªı˜¼.
+osquid:S1192("LDefine a constant instead of duplicating this literal "        {\n" 4 times.(Ÿñ¼Ñÿÿÿÿÿ8×¡‰¼.
+jsquid:S1192–"KDefine a constant instead of duplicating this literal "2019-09-06" 4 times.(´ˆõ¯8•ªı˜¼.
+ksquid:S11922"MDefine a constant instead of duplicating this literal "        },\n" 3 times.(¥ÁÊÁ8•ªı˜¼.
+gsquid:S1192"HDefine a constant instead of duplicating this literal "ChengDu" 6 times.(†¢—8†Á‰…¾.
+Hsquid:S1481¨")Remove this unused "list" local variable.(Ôà‚É8•ªı˜¼.
+msquid:S1192’"IDefine a constant instead of duplicating this literal "password" 7 times.(¤Ú‰÷ıÿÿÿÿ8•ªı˜¼.
+Asquid:S3010€""Remove this assignment of "sales".(òàÿ©8ëÜ…¾.
+‘squid:S1192,"nDefine a constant instead of duplicating this literal "            \"displayName\": \"æˆ´æµ·æ¨\",\n" 4 times.(Á­”‡ûÿÿÿÿ8×¡‰¼.
+Osquid:S1481§"+Remove this unused "status" local variable.(Ë„³ëùÿÿÿÿ8•ªı˜¼.

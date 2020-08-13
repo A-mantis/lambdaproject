@@ -27,3 +27,17 @@ l
 <src/main/java/com/mantis/lambda/config/StaticProperties.java,5\0\50a0e0272403380f18997478bcbd8bcdf3003e1f
 b
 2src/main/java/com/mantis/lambda/util/SortUtil.java,c\5\c51040fd5a2ba18e73be8ec1cb85e9e64fe27ffd
+b
+2src/main/java/com/mantis/lambda/pojo/RoleList.java,e\2\e2f96d689b21b2dbbe689c567bb6bb2627b4102a
+^
+.src/main/java/com/mantis/lambda/pojo/Role.java,8\f\8fea6729a7a05d4d568736e754dc24a64d15a922
+`
+0src/main/java/com/mantis/lambda/pojo/Status.java,0\1\018bf8469cf952200899778ab2e86b6007dc526b
+b
+2src/main/java/com/mantis/lambda/pojo/Employee.java,a\2\a2fba1671e0c94dbf4c2ac4ac0ec427c42b1b237
+e
+5src/main/java/com/mantis/lambda/pojo/SalesPerson.java,b\8\b8932defb44f22042599be625caf8086ff57ee64
+`
+0src/main/java/com/mantis/lambda/pojo/Trader.java,e\6\e61406b942938067e737bac150e2b1ffe1522c9b
+e
+5src/main/java/com/mantis/lambda/pojo/Transaction.java,2\5\25a1badf78f61c025c4b7db97e6b201a8769fd77
